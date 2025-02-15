@@ -1,0 +1,13 @@
+#game_wrapper {
+  width: 60%;
+  height: 300px;
+  margin: 50px auto;
+  text-align: center;
+}
+
+.word {
+  margin: 40px 0px;
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 2.5em;
+}

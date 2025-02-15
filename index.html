@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Клавиатурный тренажёр</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="word.js"></script>
+  </head>
+  <body>
+    <div id="game_wrapper">
+      </button>
+      <div id="word" class="word">акула</div>
+      <input id="word_input" type="text" placeholder="Введите слово" />
+
+      <div id="info">
+        <div>Осталось времени: <span id="time">5</span> с</div>
+      </div>
+    </div>
+
+    <script>
+      document.getElementById("word").onselectstart = function () {
+        return false;
+      };
+      let clicker = 0;
+      let sec = 5;
+      let old_time = sec;
+      let word = document.getElementById("word").innerHTML;
+      let game_start = false;
+
+      let level_id = "normal";
+
+      function start_sec() {
+        game_start = true;
+        let time = document.getElementById("time");
+        sec = old_time;
+        document
+          .getElementById("info")
+          .insertAdjacentHTML("afterbegin", '<span id = "go">Начали!</span>');
+        setTimeout(() => go.remove(), 1000);
+        let stop_time = setInterval(() => {
+          time.innerHTML = sec;
+          if (sec == 0) {
+            clearInterval(stop_time);
+            let info = document.getElementById("info");
+            info.insertAdjacentHTML(
+              "afterbegin",
+              '<p id = "message">Время закончилось' + " </p>"
+            );
+            game_start = false;
+          }
+          sec--;
+        }, 1000);
+      }
+
+      const input = document.querySelector("input");
+
+      input.onclick = function () {
+        if (game_start == false) {
+          document.getElementById("word_input").value = "";
+          if (document.getElementById("message")) {
+            document.getElementById("message").remove();
+          }
+          time.innerHTML = old_time;
+          start_sec();
+        }
+      };
+
+      scope.cachedWords = JSON.parse(JSON.stringify(scope.words));
+      let i = 0;
+
+      let words = [];
+      for (let elem in scope.cachedWords)
+        words.push(elem);
+
+      let text = "";
+
+      input.oninput = function () {
+        if (game_start) {
+          text = input.value;
+          if (text.toUpperCase() == word.toUpperCase()) {
+            input.value = "";
+            let random = Math.floor(Math.random() * words.length);
+            document.getElementById("word").innerHTML = words[random];
+            word = words[random];
+            sec += 3;
+            let old_time = time.innerHTML;
+            time.innerHTML = + old_time + 3;
+          }
+        }
+      };
+    </script>
+  </body>
+</html>
