@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>game_words</title>
+    <title>Клавиатурный тренажёр</title>
     <link rel="stylesheet" href="style.css" />
     <script src="word.js"></script>
   </head>
@@ -11,16 +11,14 @@
     <div id="game_wrapper">
       <button id="button_level">
         <span id="normal">Средне</span>
-        <span id="choose_img"
-          ><img
-            src="https://img.icons8.com/material-rounded/24/000000/chevron-down.png"
-        /></span>
+        <span id = "hard">Сложно </span>
+        <span id = "easy">Легко </span>
       </button>
-      <div id="word" class="word">кинотеатр</div>
+      <div id="word" class="word">акула</div>
       <input id="word_input" type="text" placeholder="Введите слово" />
 
       <div id="info">
-        <div>Осталось времени: <span id="time">4</span> с</div>
+        <div>Осталось времени: <span id="time">5</span> с</div>
         <div id="points">Очки: 0</div>
       </div>
     </div>
@@ -39,71 +37,35 @@
       let level_id = "normal";
 
       button_level.onclick = function () {
-        if (clicker == 0) {
-          let item = document.getElementById(level_id);
-          item.remove();
+        hard.addEventListener("click", choose_level);
+        easy.addEventListener("click", choose_level);
+        normal.addEventListener("click", choose_level);
 
-          choose_img.remove();
-          button_level.classList.add("button_level_open");
+        hard.addEventListener("click", stopPropagation);
+        easy.addEventListener("click", stopPropagation);
+        normal.addEventListener("click", stopPropagation);
 
-          button_level.insertAdjacentHTML(
-            "beforeend",
-            '<span id = "hard">Сложно</span>'
-          );
-
-          button_level.insertAdjacentHTML(
-            "afterbegin",
-            '<span id = "normal">Средне</span>'
-          );
-
-          button_level.insertAdjacentHTML(
-            "afterbegin",
-            '<span id = "easy">Легко</span>'
-          );
-
-          hard.addEventListener("click", choose_level);
-          easy.addEventListener("click", choose_level);
-          normal.addEventListener("click", choose_level);
-
-          hard.addEventListener("click", stopPropagation);
-          easy.addEventListener("click", stopPropagation);
-          normal.addEventListener("click", stopPropagation);
-
-          function stopPropagation(event) {
-            event.stopPropagation();
-          }
-
-          clicker = 1;
+        function stopPropagation(event) {
+          event.stopPropagation();
         }
       };
 
       function choose_level() {
-        if (clicker == 1) {
-          level_id = this.id;
-          if (level_id == "easy") {
-            sec = 5;
-            old_time = sec;
-            time.innerHTML = old_time;
-          } else if (level_id == "hard") {
-            sec = 2;
-            old_time = sec;
-            time.innerHTML = old_time;
-          } else if (level_id == "normal") {
-            sec = 4;
-            old_time = sec;
-            time.innerHTML = old_time;
-          }
-          let level = document.getElementById(level_id);
-          button_level.classList.remove("button_level_open");
-          button_level.innerHTML =
-            '<span id="' +
-            level_id +
-            '">' +
-            level.innerHTML +
-            "</span>" +
-            '<span id="choose_img"><img src="https://img.icons8.com/material-rounded/24/000000/chevron-down.png"/></span>';
-          clicker = 0;
+        level_id = this.id;
+        if (level_id == "easy") {
+          sec = 5;
+          old_time = sec;
+          time.innerHTML = old_time;
+        } else if (level_id == "hard") {
+          sec = 3;
+          old_time = sec;
+          time.innerHTML = old_time;
+        } else if (level_id == "normal") {
+          sec = 4;
+          old_time = sec;
+          time.innerHTML = old_time;
         }
+        let level = document.getElementById(level_id);
       }
 
       function start_sec() {
@@ -121,9 +83,7 @@
             let info = document.getElementById("info");
             info.insertAdjacentHTML(
               "afterbegin",
-              '<p id = "message">Время закончилось, ваш счет: ' +
-                points +
-                " </p>"
+              '<p id = "message">Время закончилось' + " </p>"
             );
             game_start = false;
           }
@@ -140,8 +100,6 @@
             document.getElementById("message").remove();
           }
           time.innerHTML = old_time;
-          points = 0;
-          document.getElementById("points").innerHTML = "Очки: " + points;
           start_sec();
         }
       };
@@ -150,9 +108,8 @@
       let i = 0;
 
       let words = [];
-      for (let elem in scope.cachedWords) {
+      for (let elem in scope.cachedWords)
         words.push(elem);
-      }
 
       let text = "";
 
@@ -164,7 +121,6 @@
             let random = Math.floor(Math.random() * words.length);
             document.getElementById("word").innerHTML = words[random];
             word = words[random];
-
             if (level_id == "easy") {
               sec += 3;
               points += text.length;
@@ -187,6 +143,7 @@
           }
         }
       };
+      button_level.onclick();
     </script>
   </body>
 </html>
